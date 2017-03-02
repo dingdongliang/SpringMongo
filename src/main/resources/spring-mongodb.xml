@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+    <!--这里需要搞明白哪些参数是必要的-->
+    <mongo:mongo-client id="mongoClient"
+                        replica-set="${mongo.replicaSet}">
+        <mongo:client-options connections-per-host="${mongo.connectionsPerHost}"
+                              threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+                              connect-timeout="${mongo.connectTimeout}"
+                              socket-timeout="${mongo.socketTimeout}"
+                              write-concern="MAJORITY"/>
+    </mongo:mongo-client>
+
+    <mongo:db-factory id="mongoFactory"
+                      mongo-ref="mongoClient" dbname="${mongo.dbname}"/>
+
+    <bean id="mongoEventsTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoFactory"/>
+    </bean>
+
+</beans>

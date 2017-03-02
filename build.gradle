@@ -1,0 +1,52 @@
+group 'net.htjs'
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+
+ext {
+    sprgVer = '4.3.2.RELEASE'
+    aspectVer = '1.8.9'
+    httpVer = '4.5.2'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile(
+            "org.mongodb:mongo-java-driver:3.3.0",
+            "org.springframework.data:spring-data-mongodb:1.9.2.RELEASE",
+            "javax.servlet:jstl:1.2",
+            "com.github.penggle:kaptcha:2.3.2",
+            "org.apache.commons:commons-lang3:3.4",
+            "org.apache.httpcomponents:httpclient:$httpVer",
+            "org.apache.httpcomponents:httpmime:$httpVer",
+            "commons-codec:commons-codec:1.10",
+            "ch.qos.logback:logback-classic:1.1.3",
+            "cglib:cglib:3.1",
+            "org.aspectj:aspectjrt:$aspectVer",
+            "org.aspectj:aspectjweaver:$aspectVer",
+            "org.springframework:spring-aop:$sprgVer",
+            "org.springframework:spring-web:$sprgVer",
+            "org.springframework:spring-webmvc:$sprgVer",
+            "org.springframework:spring-jdbc:$sprgVer",
+            "org.springframework:spring-context:$sprgVer",
+            "org.springframework:spring-context-support:$sprgVer",
+            "org.springframework:spring-core:$sprgVer",
+            "org.springframework:spring-beans:$sprgVer",
+            "org.springframework:spring-tx:$sprgVer",
+            "org.springframework:spring-test:$sprgVer",
+            "org.quartz-scheduler:quartz:2.2.1",
+            "com.alibaba:fastjson:1.2.7"
+    )
+    testCompile 'junit:junit:4.12'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

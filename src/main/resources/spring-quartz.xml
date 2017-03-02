@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- Quartz定时任务 开始 -->
+    <bean id="SprQtz"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass">
+            <value>net.htjs.sendsys.task.SprQtzDemo</value>
+        </property>
+    </bean>
+    <bean id="helloCronTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="SprQtz"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 11 * * * ?</value>
+        </property>
+    </bean>
+    <bean id="scheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobFactory" ref="jobFactory"></property>
+        <property name="triggers">
+            <list>
+            <ref bean="helloCronTrigger"/>
+            <ref bean="CreateMsgQtzTrigger"/>
+            <ref bean="CountOnlineByHourTrigger"/>
+            <ref bean="CountOnlineByDayTrigger"/>
+                <ref bean="CountCityOnlineByDayTrigger"/>
+            <ref bean="CountOnlineByMinutesTrigger"/>
+            </list>
+        </property>
+    </bean>
+    <!--Quartz定时任务结束 -->
+    <bean id="jobFactory" class="net.htjs.sendsys.task.MyJobFactory"></bean>
+    <!-- 每隔2分钟消息池消息更新一次 定时任务 开始 -->
+    <bean id="CreateMsgQtz"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass">
+            <value>net.htjs.sendsys.task.CreateMsgQtz</value>
+        </property>
+    </bean>
+    <bean id="CreateMsgQtzTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="CreateMsgQtz"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 0/2 * * * ? </value>
+        </property>
+    </bean>
+    <!--每隔2分钟消息池消息更新一次 定时任务结束 -->
+    <!-- 统计每小时的在线用户数 0-23点之间每隔58分钟触发 定时任务 开始 -->
+    <bean id="CountOnlineByHour"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass">
+            <value>net.htjs.sendsys.task.CountOnlineByHourQtz</value>
+        </property>
+    </bean>
+    <bean id="CountOnlineByHourTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="CountOnlineByHour"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 58 0-23 * * ? </value>
+        </property>
+    </bean>
+    <!--统计每小时的在线用户数 定时任务结束 -->
+    <!-- 统计每天的在线用户数 每天早上一点触发 定时任务 开始 -->
+    <bean id="CountOnlineByDay"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass">
+            <value>net.htjs.sendsys.task.CountOnlineByDayQtz</value>
+        </property>
+    </bean>
+    <bean id="CountOnlineByDayTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="CountOnlineByDay"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 0 1 * * ? </value>
+        </property>
+    </bean>
+    <!--统计每天的在线用户数 定时任务结束 -->
+    <!-- 按地区统计每天的在线用户数 每天早上一点触发 定时任务 开始 -->
+    <bean id="CountCityOnlineByDay"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass">
+            <value>net.htjs.sendsys.task.CountCityOnlineByDayQtz</value>
+        </property>
+    </bean>
+    <bean id="CountCityOnlineByDayTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="CountCityOnlineByDay"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 0 1 * * ? </value>
+        </property>
+    </bean>
+    <!--按地区统计每天的在线用户数 定时任务结束 -->
+    <!-- 统计每分钟在线用户数 定时任务 开始 -->
+    <bean id="CountOnlineByMinutes"
+          class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass">
+            <value>net.htjs.sendsys.task.CountOnlineByMinutesQtz</value>
+        </property>
+    </bean>
+    <bean id="CountOnlineByMinutesTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="CountOnlineByMinutes"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 0/1 * * * ? </value>
+        </property>
+    </bean>
+    <!--统计每分钟在线用户数 定时任务结束 -->
+</beans>
